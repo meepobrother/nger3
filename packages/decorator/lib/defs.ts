@@ -280,7 +280,7 @@ export class IMethodDecorator<T = any, O = any> {
         this._parameters.add(new IParameterDecorator(instance, type, property, parameterIndex, options, parameterTypes, metadataKey));
     }
 }
-export function getIClassDecorator<T = any, O = any>(type: Type<T>): INgerDecorator<T, O> {
+export function getINgerDecorator<T = any, O = any>(type: Type<T>): INgerDecorator<T, O> {
     if (!Reflect.has(type, nger)) {
         const value = new INgerDecorator();
         Reflect.defineProperty(type, nger, {
@@ -315,7 +315,7 @@ export function createParameterDecorator<O = any>(metadataKey: string, defOption
                 ...defOptions,
                 ...opts
             };
-            const classDecorator = getIClassDecorator(type);
+            const classDecorator = getINgerDecorator(type);
             if (!property) {
                 console.log(`constructor`)
                 classDecorator.addConstructor(type, parameterIndex, options, parameterTypes, metadataKey);
@@ -339,7 +339,7 @@ export function createPropertyDecorator<O = any>(metadataKey: string, defOptions
                 ...defOptions,
                 ...opts
             };
-            const classDecorator = getIClassDecorator(type);
+            const classDecorator = getINgerDecorator(type);
             classDecorator.addProperty(property, instance, type, options, propertyType, metadataKey)
         }
     }
@@ -359,7 +359,7 @@ export function createMethodDecorator<O = any>(metadataKey: string, defOptions?:
                 ...defOptions,
                 ...opts
             };
-            const classDecorator = getIClassDecorator(type);
+            const classDecorator = getINgerDecorator(type);
             classDecorator.addMethod(property, instance, type, descriptor, options, returnType, paramTypes, metadataKey)
         }
     }
@@ -377,7 +377,7 @@ export function createClassDecorator<O>(metadataKey: string, defOptions?: O | Ge
                 ...defOptions,
                 ...opts
             };
-            const classDecorator = getIClassDecorator(type);
+            const classDecorator = getINgerDecorator(type);
             classDecorator.addClass(type, options, metadataKey, params);
             return target;
         }

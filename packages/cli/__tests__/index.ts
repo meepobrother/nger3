@@ -6,7 +6,9 @@ import { Command, Option, createPlatform, Action } from '../lib';
     opts: {}
 })
 export class TestCommand {
-    @Option()
+    @Option({
+        alias: `t`
+    })
     test: string;
 
     @Action()
@@ -21,14 +23,20 @@ export class TestCommand {
     opts: {}
 })
 export class Test2Command {
-    @Option()
+    @Option({
+        alias: 't'
+    })
     test: string;
 
     @Action()
     do() {
         console.log(`hello test2: ${this.test}`)
     }
+
+    @Action()
+    do2() {
+        console.log(`hello test2: ${this.test}`)
+    }
 }
 
-createPlatform([TestCommand, Test2Command])
-debugger;
+createPlatform([TestCommand, Test2Command]).run(process.argv.splice(2))

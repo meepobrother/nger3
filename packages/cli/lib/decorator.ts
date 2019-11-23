@@ -10,7 +10,7 @@ export const Command = createClassDecorator<CommandOptions>(CommandMetadataKey);
 
 export const OptionMetadataKey = `OptionsMetadataKey`;
 export interface OptionOptions {
-    flags: string;
+    alias: string;
     description?: string;
     defaultValue?: any;
 }
