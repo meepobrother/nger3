@@ -22,7 +22,7 @@ export function toPlain(instance: any) {
     const type = instance.constructor;
     const obj: any = {};
     getPlainPros(type).map(it => {
-        if (it.options && it.options.isClsss) {
+        if (it.options && it.options.isClass) {
             Reflect.set(obj, it.property, toPlain(Reflect.get(instance, it.property)))
         } else {
             Reflect.set(obj, it.property, Reflect.get(instance, it.property))
@@ -36,7 +36,7 @@ export function createPlain(json: any) {
     const type = getJsonType(json);
     const instance = new type();
     getPlainPros(type).forEach(it => {
-        if (it.options && it.options.isClsss) {
+        if (it.options && it.options.isClass) {
             Reflect.set(instance, it.property, createPlain(Reflect.get(json, it.property)))
         } else {
             Reflect.set(instance, it.property, Reflect.get(json, it.property))

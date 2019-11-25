@@ -36,4 +36,5 @@ export class Test2Command {
     }
 }
 
-createPlatform([TestCommand, Test2Command]).run(process.argv.splice(2))
+createPlatform([TestCommand, Test2Command])
+    .run(process.argv.splice(2))

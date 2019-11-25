@@ -1,19 +1,17 @@
 {
-	"name": "@nger/plian",
-	"version": "1.0.0",
+	"name": "@nger/plain",
+	"version": "1.0.5",
 	"description": "> TODO: description",
 	"author": "imeepos <1037483576@qq.com>",
 	"homepage": "https://github.com/meepobrother/nger3#readme",
 	"license": "ISC",
 	"main": "lib/index.js",
-	"types": "lib/indx.d.ts",
+	"types": "lib/index.d.ts",
 	"directories": {
 		"lib": "lib",
 		"test": "__tests__"
 	},
-	"files": [
-		"lib"
-	],
+	"files": [ "lib" ],
 	"publishConfig": {
 		"registry": "http://registry.npmjs.org",
 		"access": "public"
@@ -29,6 +27,6 @@
 		"url": "https://github.com/meepobrother/nger3/issues"
 	},
 	"dependencies": {
-		"@nger/decorator": "^1.0.0"
+		"@nger/decorator": "^1.0.1"
 	}
 }

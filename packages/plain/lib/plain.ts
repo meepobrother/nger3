@@ -6,7 +6,7 @@ export const PlainMetadataKey = `__PlainMetadataKey__`;
 export const Plain = createClassDecorator<Plain>(PlainMetadataKey);
 
 export interface PlainPro {
-    isClsss?: boolean;
+    isClass?: boolean;
 }
 export const PlainProMetadataKey = `__PlainProMetadataKey__`
 export const PlainPro = createPropertyDecorator<PlainPro>(PlainProMetadataKey)

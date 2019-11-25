@@ -9,10 +9,7 @@
             "args": [
                 "-r",
                 "tsconfig-paths/register",
-                "${relativeFile}",
-                "test2",
-                "-t",
-                "ymm"
+                "${relativeFile}"
             ],
             "cwd": "${workspaceRoot}"
         }
