@@ -1,0 +1,27 @@
+<html>
+
+<head>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=d2958f40103ba8065d49ee96941ed82d&plugin=AMap.Scale"></script>
+</head>
+
+<body>
+    <div id="container" style="width: 100vw;height: 100vh;"></div>
+    <script>
+        var map = new AMap.Map('container', {
+            center: [117.000923, 36.675807],
+            zoom: 11
+        });
+        const scale = new AMap.Scale({
+            visible: true
+        });
+        map.addControl(scale);
+    </script>
+</body>
+
+</html>

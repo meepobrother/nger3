@@ -1,4 +1,5 @@
 import { getDesignType, getDesignParamTypes, getDesignReturnType, getDesignTargetParams } from "./util";
+import { clsStore } from "./store";
 const nger = Symbol.for(`__nger__decorator__`);
 export type TypeProperty = string | symbol;
 export interface GetOptions<T = any, O = any> {
@@ -379,6 +380,7 @@ export function createClassDecorator<O>(metadataKey: string, defOptions?: O | Ge
             };
             const classDecorator = getINgerDecorator(type);
             classDecorator.addClass(type, options, metadataKey, params);
+            clsStore.set(metadataKey, type);
             return target;
         }
     }

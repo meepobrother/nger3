@@ -10,7 +10,6 @@ export class TestCommand {
         alias: `t`
     })
     test: string;
-
     @Action()
     do() {
         console.log(`hello test: ${this.test}`)
@@ -27,12 +26,10 @@ export class Test2Command {
         alias: 't'
     })
     test: string;
-
     @Action()
     do() {
         console.log(`hello test2: ${this.test}`)
     }
-
     @Action()
     do2() {
         console.log(`hello test2: ${this.test}`)
