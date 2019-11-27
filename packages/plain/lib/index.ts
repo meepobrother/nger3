@@ -1,2 +1,2 @@
 export * from './plain';
-export { createPlain, toPlain } from './fromJson';
+export { createPlain, toPlain, createPlainModule, PlainModuleRef } from './fromJson';

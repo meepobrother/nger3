@@ -1,6 +1,6 @@
 {
-	"name": "@nger/plain",
-	"version": "1.0.12",
+	"name": "@nger/plain-proto",
+	"version": "0.0.0",
 	"description": "> TODO: description",
 	"author": "imeepos <1037483576@qq.com>",
 	"homepage": "https://github.com/meepobrother/nger3#readme",
@@ -13,8 +13,7 @@
 	},
 	"files": [ "lib" ],
 	"publishConfig": {
-		"registry": "http://registry.npmjs.org",
-		"access": "public"
+		"registry": "http://registry.npmjs.org"
 	},
 	"repository": {
 		"type": "git",
@@ -27,6 +26,8 @@
 		"url": "https://github.com/meepobrother/nger3/issues"
 	},
 	"dependencies": {
-		"@nger/decorator": "^1.0.1"
+		"@grpc/grpc-js": "^0.6.12",
+		"@grpc/proto-loader": "^0.5.3",
+		"grpc": "^1.24.2"
 	}
 }

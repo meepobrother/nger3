@@ -5,6 +5,9 @@
     "lerna": "^3.13.1"
   },
   "dependencies": {
+    "@nestjs/common": "^6.10.2",
+    "@nestjs/core": "^6.10.2",
+    "@nestjs/microservices": "^6.10.2",
     "ts-node": "^8.5.2",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^3.7.2"
