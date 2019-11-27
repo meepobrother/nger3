@@ -16,7 +16,8 @@ export const PlainProMetadataKey = `__PlainProMetadataKey__`;
 export const PlainPro = createPropertyDecorator<PlainPro>(PlainProMetadataKey);
 
 export interface PlainModule {
-    includes: Type<any>[];
+    imports: Type<any>[];
+    providers: Type<any>[];
 }
 export const PlainModuleMetadataKey = `__PlainModuleMetadataKey__`;
 export const PlainModule = createClassDecorator<PlainModule>(PlainModuleMetadataKey);
