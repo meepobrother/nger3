@@ -11,6 +11,7 @@ export const Plain = createClassDecorator<Plain>(PlainMetadataKey, (type: Type<a
 
 export interface PlainPro {
     isClass?: boolean;
+    type?: Type<any>;
 }
 export const PlainProMetadataKey = `__PlainProMetadataKey__`;
 export const PlainPro = createPropertyDecorator<PlainPro>(PlainProMetadataKey);

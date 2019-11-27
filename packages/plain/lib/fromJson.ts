@@ -18,7 +18,10 @@ export function getPlainDesc(type: any): string {
     }
     throw new Error(`can not found plain ${type.name}`)
 }
-export function toPlain(instance: any) {
+export function toPlain(instance: any): any {
+    if (Array.isArray(instance)) {
+        return instance.map(it => toPlain(it))
+    }
     const type = instance.constructor;
     const obj: any = {};
     getPlainPros(type).map(it => {
