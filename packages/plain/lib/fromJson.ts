@@ -33,7 +33,13 @@ export function toPlain(instance: any) {
     Reflect.set(obj, `__plain_desc`, desc)
     return obj;
 }
-export function createPlain(json: any) {
+export function createPlain(json: any): any {
+    if (Array.isArray(json)) {
+        return json.map(it => createPlain(it))
+    }
+    if (Buffer.isBuffer(json)) {
+        return Buffer.from(json);
+    }
     const type = getJsonType(json);
     if (type) {
         const instance = new type();
