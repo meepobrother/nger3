@@ -2,12 +2,19 @@ import { getDesignType, getDesignParamTypes, getDesignReturnType, getDesignTarge
 import { clsStore } from "./store";
 const nger = Symbol.for(`__nger__decorator__`);
 export type TypeProperty = string | symbol;
-export interface GetOptions<T = any, O = any> {
+interface ClassOptions<T, O> {
     (target: Type<T>): O;
-    (target: Type<T>, property: TypeProperty, instance: T): O;
-    (target: Type<T>, property: TypeProperty | undefined, parameterIndex: number, instance: T): O;
-    (target: Type<T>, property: TypeProperty, descriptor: TypedPropertyDescriptor<any>, instance: T): O;
 }
+interface PropertyOptions<T, O> {
+    (target: Type<T>, instance: T, property: TypeProperty, propertyType: any): O;
+}
+interface ParameterOptions<T, O> {
+    (target: Type<T>, instance: T, property: TypeProperty | undefined, parameterIndex: number): O;
+}
+interface MethodOptions<T, O> {
+    (target: Type<T>, instance: T, property: TypeProperty, descriptor: TypedPropertyDescriptor<any>): O
+}
+export type GetOptions<T = any, O = any> = ClassOptions<T, O> | PropertyOptions<T, O> | ParameterOptions<T, O> | MethodOptions<T, O>;
 export interface Type<T> extends Function {
     new(...args: any[]): T;
 }
@@ -293,7 +300,14 @@ export function getINgerDecorator<T = any, O = any>(type: Type<T>): INgerDecorat
 export function isGetOptions(val: any): val is GetOptions {
     return typeof val === 'function';
 }
-export function createParameterDecorator<O = any>(metadataKey: string, defOptions?: O | GetOptions<any, O>): (opt?: O) => ParameterDecorator {
+interface ParameterCallBack<O = any> {
+    (options: O, target: any, instance: any, property: TypeProperty | undefined, parameterIndex: number): void;
+}
+export function createParameterDecorator<O = any>(
+    metadataKey: string,
+    defOptions?: ParameterOptions<any, O>,
+    callback?: ParameterCallBack<O>
+): (opt?: O) => ParameterDecorator {
     return (opts?: O): ParameterDecorator => {
         return (target: any, property: TypeProperty | undefined, parameterIndex: number) => {
             let parameterTypes = [];
@@ -309,13 +323,13 @@ export function createParameterDecorator<O = any>(metadataKey: string, defOption
             if (!property) {
                 type = target;
             }
-            if (isGetOptions(defOptions)) {
-                defOptions = defOptions(type, property, parameterIndex, instance);
+            let options: any = opts;
+            if (defOptions) {
+                options = {
+                    ...defOptions(type, instance, property, parameterIndex),
+                    ...opts
+                };
             }
-            const options = {
-                ...defOptions,
-                ...opts
-            };
             const classDecorator = getINgerDecorator(type);
             if (!property) {
                 console.log(`constructor`)
@@ -323,29 +337,45 @@ export function createParameterDecorator<O = any>(metadataKey: string, defOption
             } else {
                 classDecorator.addMethodParameter(instance, type, property, parameterIndex, options, parameterTypes, metadataKey);
             }
+            callback && callback(options, target, instance, property, parameterIndex);
         }
     }
 }
-export function createPropertyDecorator<O = any>(metadataKey: string, defOptions?: O | GetOptions<any, O>): (opt?: O) => PropertyDecorator {
+interface PropertyCallBack<O = any> {
+    (options: O, target: any, instance: any, property: TypeProperty): void;
+}
+export function createPropertyDecorator<O = any>(
+    metadataKey: string,
+    defOptions?: PropertyOptions<any, O>,
+    callback?: PropertyCallBack
+): (opt?: O) => PropertyDecorator {
     return (opts?: O): PropertyDecorator => {
         return (target: any, property: TypeProperty) => {
             // target是Class的instance
             const propertyType = getDesignType(target, property)
             const type = target.constructor;
             const instance = target;
-            if (isGetOptions(defOptions)) {
-                defOptions = defOptions(type, property, instance);
+            let options = opts;
+            if (defOptions) {
+                options = {
+                    ...defOptions(type, instance, property, propertyType),
+                    ...opts
+                };
             }
-            const options = {
-                ...defOptions,
-                ...opts
-            };
             const classDecorator = getINgerDecorator(type);
             classDecorator.addProperty(property, instance, type, options, propertyType, metadataKey)
+            callback && callback(options, target, instance, property)
         }
     }
 }
-export function createMethodDecorator<O = any>(metadataKey: string, defOptions?: O | GetOptions<any, O>): (opt?: O) => MethodDecorator {
+interface MethodCallBack<O = any> {
+    (options: O, target: any, instance: any): void;
+}
+export function createMethodDecorator<O = any>(
+    metadataKey: string,
+    defOptions?: MethodOptions<any, O>,
+    callback?: MethodCallBack<O>
+): (opt?: O) => MethodDecorator {
     return (opts?: O): MethodDecorator => {
         return (target: any, property: TypeProperty, descriptor: TypedPropertyDescriptor<any>) => {
             // target是Class的instance
@@ -353,53 +383,67 @@ export function createMethodDecorator<O = any>(metadataKey: string, defOptions?:
             const paramTypes = getDesignParamTypes(target, property) || [];
             const type = target.constructor;
             const instance = target;
-            if (isGetOptions(defOptions)) {
-                defOptions = defOptions(type, property, descriptor, instance);
+            let options: any = opts;
+            if (defOptions) {
+                options = {
+                    ...defOptions(type, instance, property, descriptor),
+                    ...opts
+                };
             }
-            const options = {
-                ...defOptions,
-                ...opts
-            };
             const classDecorator = getINgerDecorator(type);
             classDecorator.addMethod(property, instance, type, descriptor, options, returnType, paramTypes, metadataKey)
+            callback && callback(options, target, instance);
         }
     }
 }
-export function createClassDecorator<O>(metadataKey: string, defOptions?: O | GetOptions<any, O>): (opts?: O) => ClassDecorator {
+interface ClassCallBack<O = any> {
+    (options: O, target: any): void;
+}
+export function createClassDecorator<O>(
+    metadataKey: string,
+    defOptions?: ClassOptions<any, O>,
+    callback?: ClassCallBack<O>
+): (opts?: O) => ClassDecorator {
     return (opts?: O): ClassDecorator => {
         return (target: any) => {
             // target是class
             const type = target;
-            if (isGetOptions(defOptions)) {
-                defOptions = defOptions(type);
+            let options: any = opts;
+            if (defOptions) {
+                options = {
+                    ...defOptions(type),
+                    ...opts
+                };
             }
             const params = getDesignTargetParams(target) || []
-            const options = {
-                ...defOptions,
-                ...opts
-            };
             const classDecorator = getINgerDecorator(type);
             classDecorator.addClass(type, options, metadataKey, params);
             clsStore.set(metadataKey, type);
+            callback && callback(options, target)
             return target;
         }
     }
 }
-export function createDecorator<O>(metadataKey: string, defOptions?: O | GetOptions<any, O>): (opts?: O) => any {
+type CallBack<O> = ClassCallBack<O> | PropertyCallBack<O> | MethodCallBack<O> | ParameterCallBack<O>;
+export function createDecorator<O>(
+    metadataKey: string,
+    defOptions?: O | GetOptions<any, O>,
+    callback?: CallBack<O>
+): (opts?: O) => any {
     return (opt?: O) => (target: any, property: any, descriptor: any) => {
         if (property) {
             if (typeof descriptor === 'undefined') {
-                return createPropertyDecorator(metadataKey, defOptions)(opt)(target, property);
+                return createPropertyDecorator(metadataKey, defOptions as PropertyOptions<any, O>, callback as any)(opt)(target, property);
             } else if (typeof descriptor === 'number') {
-                return createParameterDecorator(metadataKey, defOptions)(opt)(target, property, descriptor);
+                return createParameterDecorator(metadataKey, defOptions as ParameterOptions<any, O>, callback as any)(opt)(target, property, descriptor);
             } else {
-                return createMethodDecorator(metadataKey, defOptions)(opt)(target, property, descriptor);
+                return createMethodDecorator(metadataKey, defOptions as MethodOptions<any, O>, callback as any)(opt)(target, property, descriptor);
             }
         } else {
             if (typeof descriptor === 'number') {
-                return createParameterDecorator(metadataKey, defOptions)(opt)(target, property, descriptor)
+                return createParameterDecorator(metadataKey, defOptions as ParameterOptions<any, O>, callback as any)(opt)(target, property, descriptor)
             }
-            return createClassDecorator(metadataKey, defOptions)(opt)(target);
+            return createClassDecorator(metadataKey, defOptions as ClassOptions<any, O>, callback as any)(opt)(target);
         }
     }
 }

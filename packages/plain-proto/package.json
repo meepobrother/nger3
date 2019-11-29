@@ -1,6 +1,6 @@
 {
 	"name": "@nger/plain-proto",
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"description": "> TODO: description",
 	"author": "imeepos <1037483576@qq.com>",
 	"homepage": "https://github.com/meepobrother/nger3#readme",
@@ -20,14 +20,16 @@
 		"url": "git+https://github.com/meepobrother/nger3.git"
 	},
 	"scripts": {
-		"test": "echo \"Error: run tests from root\" && exit 1"
+		"test": "echo \"Error: run tests from root\" && exit 1",
+		"asbuild:untouched": "asc assembly/index.ts -b build/untouched.wasm -t build/untouched.wat --sourceMap --validate --debug",
+		"asbuild:optimized": "asc assembly/index.ts -b build/optimized.wasm -t build/optimized.wat --sourceMap --validate --optimize",
+		"asbuild": "npm run asbuild:untouched && npm run asbuild:optimized"
 	},
 	"bugs": {
 		"url": "https://github.com/meepobrother/nger3/issues"
 	},
 	"dependencies": {
-		"@grpc/grpc-js": "^0.6.12",
-		"@grpc/proto-loader": "^0.5.3",
-		"grpc": "^1.24.2"
+		"@nger/decorator": "^1.0.1",
+		"protobufjs": "^6.8.8"
 	}
 }

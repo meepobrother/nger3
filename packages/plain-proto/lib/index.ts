@@ -1,10 +1,9 @@
-import protoLoader = require('@grpc/proto-loader');
-// import grpcLibrary = require('grpc');
-// OR
-import grpcLibrary = require('@grpc/grpc-js');
-protoLoader.load(protoFileName, options).then(packageDefinition => {
-    const packageObject = grpcLibrary.loadPackageDefinition(packageDefinition);
-});
-// OR
-const packageDefinition = protoLoader.loadSync(protoFileName, options);
-const packageObject = grpcLibrary.loadPackageDefinition(packageDefinition);
+import { Type } from '@nger/decorator';
+export * from './decorator';
+export function decode<T>(type: Type<T>, buffer: Buffer): T {
+    return (type as any).$type.decode(buffer);
+}
+export function encode<T>(instance: T): Buffer {
+    const type = (instance as any).constructor.$type;
+    return type.encode(instance).finish()
+}

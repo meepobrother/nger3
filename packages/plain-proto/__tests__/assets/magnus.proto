@@ -1,0 +1,10 @@
+package plain;
+syntax = "proto3";
+message Empty{
+}
+message DemoResult{
+	string title = 0;
+}
+service Demo {
+	rpc Do(Empty) returns(DemoResult) {}
+}

@@ -1,0 +1,4 @@
+{
+	"inputs": [ "src/*.ts" ],
+	"name": "plain"
+}
