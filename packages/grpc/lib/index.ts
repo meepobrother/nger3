@@ -5,4 +5,4 @@ startGrpc(AppModule, {
     url: ``,
     protoPath: ``,
     package: ``
-})
+});
