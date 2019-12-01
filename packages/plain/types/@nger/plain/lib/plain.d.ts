@@ -1,6 +1,6 @@
 import { Type } from "@nger/decorator";
 export interface Plain {
-    desc: string | number;
+    desc: string | number | (string | number)[];
 }
 export declare const PlainMetadataKey = "__PlainMetadataKey__";
 export declare const Plain: (opts?: Plain | undefined) => ClassDecorator;
