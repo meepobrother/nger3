@@ -8,7 +8,7 @@ export function getJsonType(json: any, key: string = `__plain_desc`): any {
 export function hasPlainDesc(it: any, val: any) {
     const plainDesc = getPlainDesc(it);
     if (Array.isArray(plainDesc)) {
-        return plainDesc.some(val)
+        return plainDesc.includes(val)
     }
     return plainDesc === val;
 }
