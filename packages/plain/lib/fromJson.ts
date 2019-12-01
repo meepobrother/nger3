@@ -9,7 +9,7 @@ export function getPlainPros(type: any): IPropertyDecorator<any, PlainPro>[] {
     const nger = getINgerDecorator(type);
     return nger.properties.filter(it => it.metadataKey === PlainProMetadataKey) || [];
 }
-export function getPlainDesc(type: any): string | undefined {
+export function getPlainDesc(type: any): string | number | undefined {
     const nger = getINgerDecorator(type);
     const plain = nger.classes.find(it => it.metadataKey === PlainMetadataKey) as IClassDecorator<any, Plain>;
     if (plain) {
