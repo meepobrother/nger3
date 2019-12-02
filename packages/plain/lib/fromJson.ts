@@ -23,16 +23,16 @@ export function getPlainDesc(type: any): string | number | (string | number)[] |
         return plain.options.desc;
     }
 }
-export function toPlain(instance: any, key: string = `__plain_desc`): any {
+export function toPlain(instance: any, key: string = `__plain_desc`, handler?: (source: any, target: any) => any): any {
     if (Array.isArray(instance)) {
-        return instance.map(it => toPlain(it, key))
+        return instance.map(it => toPlain(it, key, handler))
     }
     const type = instance.constructor;
     const obj: any = {};
     getPlainPros(type).map(it => {
         const val = Reflect.get(instance, it.property);
         if (it.options && it.options.isClass) {
-            if (val) Reflect.set(obj, it.property, toPlain(val, key))
+            if (val) Reflect.set(obj, it.property, toPlain(val, key, handler))
         } else {
             Reflect.set(obj, it.property, val)
         }
@@ -41,16 +41,18 @@ export function toPlain(instance: any, key: string = `__plain_desc`): any {
     const old = Reflect.get(obj, key);
     if (Array.isArray(desc)) {
         if (desc.includes(old)) {
+            handler && handler(instance, obj)
             return obj;
         }
         throw new Error(`${old} not in [${desc.join(',')}]`)
     }
     Reflect.set(obj, key, desc);
+    handler && handler(instance, obj)
     return obj;
 }
-export function createPlain(json: any, key: string = `__plain_desc`): any {
+export function createPlain(json: any, key: string = `__plain_desc`, handler?: (source: any, target: any) => any): any {
     if (Array.isArray(json)) {
-        return json.map(it => createPlain(it, key))
+        return json.map(it => createPlain(it, key, handler))
     }
     if (Buffer.isBuffer(json)) {
         return Buffer.from(json);
@@ -64,11 +66,12 @@ export function createPlain(json: any, key: string = `__plain_desc`): any {
                 val = Buffer.from(val)
             }
             if (it.options && it.options.isClass) {
-                if (val) Reflect.set(instance, it.property, createPlain(val, key))
+                if (val) Reflect.set(instance, it.property, createPlain(val, key, handler))
             } else {
                 Reflect.set(instance, it.property, val);
             }
         });
+        handler && handler(json, instance);
         return instance;
     }
     return json;
@@ -78,11 +81,11 @@ export class PlainModuleRef<T> {
     constructor(instance: T) {
         this.instance = instance;
     }
-    create<T>(json: any, key: string = `__plain_desc`): T {
-        return createPlain(json, key)
+    create<T>(json: any, key: string = `__plain_desc`, handler?: (source: any, target: any) => any): T {
+        return createPlain(json, key, handler)
     }
-    toJson(type: any, key: string = `__plain_desc`) {
-        return toPlain(type, key);
+    toJson(type: any, key: string = `__plain_desc`, handler?: (source: any, target: any) => any) {
+        return toPlain(type, key, handler);
     }
 }
 export function createPlainModule<T>(type: Type<T>): PlainModuleRef<T> {

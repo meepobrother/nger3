@@ -26,11 +26,13 @@ export function createClient<T>(options: ClientOptions): T {
                 get: (target: any, p: PropertyKey, receiver: any) => {
                     const m = Reflect.get(target, p);
                     return (args: object) => {
-                        return m(args, (err: Error, response: any) => {
-                            console.log({
-                                args,
-                                err,
-                                response
+                        return new Promise((resolve, reject) => {
+                            m(args, (err: Error, response: any) => {
+                                console.log({
+                                    args,
+                                    err,
+                                    response
+                                })
                             })
                         })
                     }
