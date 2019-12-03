@@ -2,13 +2,20 @@ import { Type, clsStore, IClassDecorator, getINgerDecorator, IPropertyDecorator 
 import { PlainMetadataKey, Plain, PlainProMetadataKey, PlainPro } from "./plain";
 export function getJsonType(json: any, key: string = `__plain_desc`): any {
     const set = clsStore.get<any>(PlainMetadataKey);
-    const type = [...set].find(it => hasPlainDesc(it, (json[key] || json.__plain_desc)));
+    const type = [...set].find(it => {
+        return hasPlainDesc(it, (json[key] || json.__plain_desc), json)
+    });
     if (type) return type;
 }
-export function hasPlainDesc(it: any, val: any) {
-    const plainDesc = getPlainDesc(it);
+export function hasPlainDesc(it: any, val: any, json: any) {
+    const plainDesc: any = getPlainDesc(it);
     if (Array.isArray(plainDesc)) {
         return plainDesc.includes(val)
+    }
+    if (typeof plainDesc === 'object') {
+        return Object.keys(plainDesc).every(key => {
+            return plainDesc[key] === json[key]
+        })
     }
     return plainDesc === val;
 }
@@ -16,14 +23,14 @@ export function getPlainPros(type: any): IPropertyDecorator<any, PlainPro>[] {
     const nger = getINgerDecorator(type);
     return nger.properties.filter(it => it.metadataKey === PlainProMetadataKey) || [];
 }
-export function getPlainDesc(type: any): string | number | (string | number)[] | undefined {
+export function getPlainDesc(type: any): string | number | object | (string | number)[] | undefined {
     const nger = getINgerDecorator(type);
     const plain = nger.classes.find(it => it.metadataKey === PlainMetadataKey) as IClassDecorator<any, Plain>;
     if (plain) {
         return plain.options.desc;
     }
 }
-export function toPlain(instance: any, key: string = `__plain_desc`, handler?: (source: any, target: any) => any): any {
+export function toPlain(instance: any, key: string = `__plain_desc`, handler?: (source: IPropertyDecorator<any, PlainPro>, target: any) => any): any {
     if (Array.isArray(instance)) {
         return instance.map(it => toPlain(it, key, handler))
     }
@@ -31,23 +38,33 @@ export function toPlain(instance: any, key: string = `__plain_desc`, handler?: (
     const obj: any = {};
     getPlainPros(type).map(it => {
         const val = Reflect.get(instance, it.property);
-        if (it.options && it.options.isClass) {
-            if (val) Reflect.set(obj, it.property, toPlain(val, key, handler))
+        if (handler) {
+            const res = handler(it, val);
+            Reflect.set(obj, it.property, res)
         } else {
-            Reflect.set(obj, it.property, val)
+            if (it.options && it.options.isClass) {
+                if (val) Reflect.set(obj, it.property, toPlain(val, key, handler))
+            } else {
+                Reflect.set(obj, it.property, val)
+            }
         }
     });
-    const desc = getPlainDesc(type);
-    const old = Reflect.get(obj, key);
-    if (Array.isArray(desc)) {
-        if (desc.includes(old)) {
-            handler && handler(instance, obj)
-            return obj;
+    const desc: any = getPlainDesc(type);
+    if (typeof desc === 'object') {
+        return {
+            ...obj,
+            ...desc
         }
-        throw new Error(`${old} not in [${desc.join(',')}]`)
+    } else {
+        const old = Reflect.get(obj, key);
+        if (Array.isArray(desc)) {
+            if (desc.includes(old)) {
+                return obj;
+            }
+            throw new Error(`${old} not in [${desc.join(',')}]`)
+        }
+        Reflect.set(obj, key, desc);
     }
-    Reflect.set(obj, key, desc);
-    handler && handler(instance, obj)
     return obj;
 }
 export function createPlain(json: any, key: string = `__plain_desc`, handler?: (source: any, target: any) => any): any {

@@ -1,5 +1,6 @@
 import { loadPackageDefinition, credentials } from 'grpc';
 import { loadSync } from '@grpc/proto-loader';
+import { Observable } from 'rxjs';
 export interface ClientOptions {
     protoPath: string;
     url: string;
@@ -24,15 +25,26 @@ export function createClient<T>(options: ClientOptions): T {
             const client = new Client(options.url, credentials.createInsecure())
             return new Proxy(client, {
                 get: (target: any, p: PropertyKey, receiver: any) => {
-                    const m = Reflect.get(target, p);
-                    return (args: object) => {
-                        return new Promise((resolve, reject) => {
-                            m(args, (err: Error, response: any) => {
-                                console.log({
-                                    args,
-                                    err,
-                                    response
-                                })
+                    let m = Reflect.get(target, p);
+                    return (args: object | Promise<object> | Observable<object>) => {
+                        return new Observable((obs) => {
+                            const channel = m.bind(target)(args, (err: Error, response: any) => {
+                                if (response)
+                                    obs.next(response);
+                                if (err)
+                                    obs.error(err);
+                            })
+                            channel.on("data", (cd: any) => {
+                                obs.next(cd)
+                            });
+                            channel.on('end', () => {
+                                obs.complete()
+                            })
+                            channel.on(`error`, (err: any) => {
+                                obs.error(err)
+                            })
+                            channel.on(`close`, () => {
+                                obs.complete()
                             })
                         })
                     }
