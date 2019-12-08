@@ -29,6 +29,7 @@
         "url": "https://github.com/meepobrother/nger3/issues"
     },
     "dependencies": {
+        "@nger/decorator": "^1.0.1",
         "@types/yargs-parser": "^13.1.0",
         "yargs-parser": "^16.1.0"
     }

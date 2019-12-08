@@ -1,10 +1,12 @@
-import { createClassDecorator, createPropertyDecorator, createMethodDecorator, Type } from '@nger/decorator';
-import { CommandOptions as ICommandOptions } from 'commander';
+import { createClassDecorator, createPropertyDecorator, createMethodDecorator } from '@nger/decorator';
 export const CommandMetadataKey = `CommandMetadataKey`;
 export interface CommandOptions {
     name: string;
     desc?: string;
-    opts?: ICommandOptions;
+    opts?: {
+        noHelp?: boolean;
+        isDefault?: boolean;
+    };
 }
 export const Command = createClassDecorator<CommandOptions>(CommandMetadataKey);
 

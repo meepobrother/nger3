@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@nger/decorator@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@nger/decorator/-/decorator-1.0.1.tgz#cf8a6de46c920106c908e1ac27d952f4d3105253"
+  integrity sha512-SUvkJZ7twApLjYGhmKSzw2RsJrHqe4FfBeSRnIjucV38lHwXlbkXIEFTDs9F8U6qtlBifU9KaMgX3UZ0ON6NiA==
+  dependencies:
+    reflect-metadata "^0.1.13"
+
 "@types/yargs-parser@^13.1.0":
   version "13.1.0"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-13.1.0.tgz#c563aa192f39350a1d18da36c5a8da382bbd8228"
@@ -16,6 +23,11 @@ decamelize@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
+
+reflect-metadata@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
+  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
 
 yargs-parser@^16.1.0:
   version "16.1.0"
