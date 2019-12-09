@@ -1,4 +1,4 @@
-import { Type } from '@nger3/decorator';
+import { Type } from '@nger/decorator';
 export abstract class Injector {
     abstract get<T>(token: any): T;
 }

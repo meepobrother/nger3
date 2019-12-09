@@ -1,4 +1,4 @@
-import { Type } from '@nger3/decorator';
+import { Type } from '@nger/decorator';
 import { InjectionToken } from './token';
 export interface AbstractType<T> extends Function { prototype: T; }
 export type InjectionString<T> = string & {

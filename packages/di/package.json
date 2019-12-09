@@ -25,5 +25,8 @@
   },
   "bugs": {
     "url": "https://github.com/meepobrother/nger3/issues"
+  },
+  "dependencies": {
+    "@nger/decorator": "^1.1.1"
   }
 }
