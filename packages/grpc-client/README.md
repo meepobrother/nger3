@@ -3,7 +3,7 @@
 > 一款简单实用的graphql客户端
 
 ```ts
-import { createClient } from '../lib';
+import { createClient } from '@nger/grpc-client';
 export interface Service1 {
     add(a: number, b: number): Observable<number>;
 }
