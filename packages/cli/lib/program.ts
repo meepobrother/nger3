@@ -32,10 +32,10 @@ export function load(typeCommand: Type<any>): void {
             }
             handlers.push(handler);
         });
-        _program.action(async (arg: string, command: Command) => {
+        _program.action(async () => {
             const instance = new typeCommand();
             handlers.map(handler => {
-                handler(instance, command)
+                handler(instance, _program)
             });
             nger.methods.filter(it => it.metadataKey === ActionMetadataKey).map((it: IMethodDecorator<any, ActionOptions>) => {
                 const action = Reflect.get(instance, it.property);
