@@ -2,12 +2,11 @@
 # yarn lockfile v1
 
 
-"@nger/decorator@^1.0.2":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@nger/decorator/-/decorator-1.0.9.tgz#a8e5192163570f98dcccfebe110f349797cb0713"
-  integrity sha512-7v03hrugDIGxbUTky3mWGXRkbyFoyXHYuFO9wAksj4bx+sQy9q4OXZmgLSzBcNqRozfzzvMnO8zFIAuZH2wM5g==
+"@nger/decorator@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@nger/decorator/-/decorator-1.1.1.tgz#dd148ec7f452c9d342bfda058aaae83b5763dfe6"
+  integrity sha512-r75jHtunMyNeOaykCkqXfyAuGeBZCVojk72NPsRK+mfIg5wIra/cOcEqFy+KA/hzsoQtujwEjG8iuYgGGihX0Q==
   dependencies:
-    nger-di "^1.0.9"
     reflect-metadata "^0.1.13"
 
 "@types/yargs-parser@^13.1.0":
@@ -24,11 +23,6 @@ decamelize@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
-
-nger-di@^1.0.9:
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/nger-di/-/nger-di-1.0.15.tgz#515b054de86d27cd929af5740629c5fc0762bdb1"
-  integrity sha512-0hXIK7UNfr1IAF4KZpJjHcqO0/PwKOxVW6OVKHqdTboPLYduW26Lcgg5MoRf+s7TWm7iMJk0ev8mInbkdd0xeg==
 
 reflect-metadata@^0.1.13:
   version "0.1.13"

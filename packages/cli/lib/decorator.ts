@@ -10,7 +10,6 @@ export interface CommandOptions {
         isDefault?: boolean;
     };
 }
-
 export const Command = createClassDecorator<CommandOptions>(CommandMetadataKey, (target: any) => {
     return {
         name: target.name
