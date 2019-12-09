@@ -85,7 +85,7 @@ export class IClassDecorator<T = any, O = any> {
     private _options: O;
     private _metadataKey: string;
     private _params: any[];
-    get options() {
+    get options(): O {
         return { ...this._options };
     }
     get type() {

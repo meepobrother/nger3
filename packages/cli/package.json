@@ -1,6 +1,6 @@
 {
     "name": "@nger/cli",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "> TODO: description",
     "author": "imeepos <1037483576@qq.com>",
     "homepage": "https://github.com/meepobrother/nger3#readme",
@@ -23,7 +23,7 @@
         "url": "git+https://github.com/meepobrother/nger3.git"
     },
     "scripts": {
-        "test": "echo \"Error: run tests from root\" && exit 1"
+        "start": "ts-node -r tsconfig-paths/register __tests__/index.ts"
     },
     "bugs": {
         "url": "https://github.com/meepobrother/nger3/issues"
