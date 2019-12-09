@@ -332,7 +332,6 @@ export function createParameterDecorator<O = any>(
             }
             const classDecorator = getINgerDecorator(type);
             if (!property) {
-                console.log(`constructor`)
                 classDecorator.addConstructor(type, parameterIndex, options, parameterTypes, metadataKey);
             } else {
                 classDecorator.addMethodParameter(instance, type, property, parameterIndex, options, parameterTypes, metadataKey);

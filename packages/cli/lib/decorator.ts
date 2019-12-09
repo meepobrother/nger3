@@ -3,6 +3,7 @@ import { createClassDecorator, createPropertyDecorator, createMethodDecorator, T
 export const CommandMetadataKey = `CommandMetadataKey`;
 export interface CommandOptions {
     name: string;
+    alias?: string;
     desc?: string;
     opts?: {
         noHelp?: boolean;

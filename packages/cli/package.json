@@ -1,12 +1,15 @@
 {
     "name": "@nger/cli",
-    "version": "1.0.1",
+    "version": "1.1.3",
     "description": "> TODO: description",
     "author": "imeepos <1037483576@qq.com>",
     "homepage": "https://github.com/meepobrother/nger3#readme",
     "license": "ISC",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
+    "bin": {
+        "nger-cli": "lib/bin.js"
+    },
     "directories": {
         "lib": "lib",
         "test": "__tests__"
@@ -29,7 +32,7 @@
         "url": "https://github.com/meepobrother/nger3/issues"
     },
     "dependencies": {
-        "@nger/decorator": "^1.0.1",
+        "@nger/decorator": "^1.1.1",
         "@types/yargs-parser": "^13.1.0",
         "yargs-parser": "^16.1.0"
     }
