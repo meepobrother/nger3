@@ -1,71 +1,39 @@
-import { Plain, PlainPro, createPlain, toPlain } from '../lib';
+import { Plain, PlainPro, createPlain, toPlain, createPlainModule, PlainModule } from '../lib';
 
-@Plain({
-    desc: `demo`
-})
+@Plain()
 export class Demo {
-    @PlainPro()
-    title: string;
-}
-@Plain({
-    desc: `demo2`
-})
-export class Demo2 {
-
-    @PlainPro()
-    title: string;
-
-    @PlainPro({
-        isClass: true
-    })
-    demo: Demo;
-}
-@Plain({
-    desc: `demo3`
-})
-export class Demo3 {
-    @PlainPro({
-        isClass: true
-    })
-    demo2: Demo2;
-
     @PlainPro()
     title: string;
     constructor(title: string) {
         this.title = title;
     }
 }
-@Plain({
-    desc: `demo4`
-})
-export class Demo4 {
+@Plain()
+export class Demo2 {
+    @PlainPro()
+    title: string;
     @PlainPro({
         isClass: true
     })
-    demo3: Demo3;
-
-    @PlainPro({
-        isClass: true,
-        type: Demo3
-    })
-    demos: Demo3[];
-
-    @PlainPro()
-    title: string;
+    demo: Demo[];
 }
 
-const demo4 = new Demo4();
+@PlainModule({
+    imports: [],
+    providers: [
+        Demo2,
+        Demo
+    ]
+})
+export class DemoModule { }
+
+const ref = createPlainModule(DemoModule)
+
+const demo4 = new Demo2();
 demo4.title = `demo4`;
-demo4.demo3 = new Demo3(`demo1`);
-demo4.demos = [new Demo3(`demo2`), new Demo3(`demo3`)];
-demo4.demo3.title = `demo3`;
-demo4.demo3.demo2 = new Demo2();
-demo4.demo3.demo2.title = `demo2`;
-demo4.demo3.demo2.demo = new Demo();
-demo4.demo3.demo2.demo.title = `demo`;
+demo4.demo = [new Demo(`demo1`), new Demo(`demo2`)];
 
-const demo4Plain = toPlain(demo4)
-
-const demo5 = createPlain(demo4Plain);
+const demo4Plain = ref.toJson(demo4);
+const demo5 = ref.create(demo4Plain);
 
 debugger;
