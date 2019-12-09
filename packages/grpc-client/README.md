@@ -1,11 +1,3 @@
-# `grpc-client`
+# `@nger/grpc-client`
 
-> TODO: description
-
-## Usage
-
-```
-const grpcClient = require('grpc-client');
-
-// TODO: DEMONSTRATE API
-```
+> 一款简单实用的graphql客户端
